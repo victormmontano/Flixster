@@ -95,7 +95,7 @@ public class MovieDetailed {
 
     public double getVoteAverage(){ return voteAverage; }
 
-    public double getRating(){ return voteAverage/2; }
+    public double getRating(){ return voteAverage; }
 
     public String getFormattedRuntime(){
         return String.format("%02d:%02d", runtime / 60, (runtime % 60));

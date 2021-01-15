@@ -15,6 +15,7 @@ public class Movie {
     String language;
     int id;
     boolean adult;
+    double voteAverage;
 
     public Movie(JSONObject jsonObject) throws JSONException {
         posterPath = jsonObject.getString("poster_path");
@@ -24,7 +25,7 @@ public class Movie {
         id = jsonObject.getInt("id");
         language = "English";
         adult = jsonObject.getBoolean("adult");
-
+        voteAverage = jsonObject.getDouble("vote_average");
     }
 
     public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
@@ -84,5 +85,9 @@ public class Movie {
     }
 
     public boolean isAdult(){ return adult; }
+
+    public double getVoteAverage(){ return voteAverage; }
+
+    public boolean isPopular() { return voteAverage > 5.0;}
 
 }

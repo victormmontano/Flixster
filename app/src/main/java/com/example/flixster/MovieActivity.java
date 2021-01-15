@@ -66,7 +66,7 @@ public class MovieActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         if(id.isEmpty()){
-            Toast.makeText(getApplicationContext(), "Intent passing data did not work", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Id not passed", Toast.LENGTH_SHORT).show();
         }
         String url = String.format(DETAILS_URL, id);
       //  Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();

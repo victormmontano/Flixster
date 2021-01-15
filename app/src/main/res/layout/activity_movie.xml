@@ -38,10 +38,11 @@
 
         <RatingBar
             android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMovieTitle"
-            android:numStars="5"
+            android:numStars="10"
             android:stepSize=".1" />
 
         <TextView
@@ -67,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMovieDescription"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:text="Recommended"
             android:textSize="18sp"
             android:textStyle="italic" />
