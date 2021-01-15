@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MovieActivity">
+
+    <ImageView
+        android:id="@+id/ivMoviePoster"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerLanguage"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvMovieTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerLanguage"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/ivMoviePoster"
+        android:textSize="20sp"
+        tools:text="Title" />
+
+    <Spinner
+        android:id="@+id/spinnerLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_toStartOf="@id/ivMoviePoster"
+        android:entries="@array/language_array" />
+
+    <TextView
+        android:id="@+id/tvMovieDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvRuntime"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/ivMoviePoster"
+        android:textSize="16sp"
+        tools:text="Description of the movie" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMovieTitle"
+        android:layout_toEndOf="@id/ivMoviePoster"
+        android:numStars="5"
+        android:stepSize=".1" />
+
+    <TextView
+        android:id="@+id/tvRuntime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ratingBar"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/ivMoviePoster"
+        tools:text="HH:MM" />
+</RelativeLayout>

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#B5C5B8">
 
     <ImageView
         android:id="@+id/ivPoster"
@@ -22,6 +23,7 @@
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@id/ivPoster"
         android:textSize="24sp"
+        android:textStyle="bold"
         tools:text="Soul" />
 
     <TextView
@@ -33,4 +35,5 @@
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/ivPoster"
         tools:text="Joe Gardner is a middle school teacher with a love for jazz music. After a successful gig at the Half Note Club, he suddenly gets into an accident that separates his soul from his body and is transported to the You Seminar, a center in which souls develop and gain passions before being transported to a newborn child. Joe must enlist help from the other souls-in-training, like 22, a soul who has spent eons in the You Seminar, in order to get back to Earth." />
+
 </RelativeLayout>

@@ -4,12 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.adapters.MovieAdapter;
+import com.example.flixster.interfaces.ItemClickListener;
 import com.example.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -25,17 +31,30 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
     public static final String TAG = "MainActivity";
+    public static final String TRANSLATION_URL = "https://api.themoviedb.org/3/movie/";
 
     List<Movie> movies;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView rvMovies = findViewById(R.id.rvMovies);
-        movies = new ArrayList<>();
+         movies = new ArrayList<>();
 
-        MovieAdapter movieAdapter = new MovieAdapter(this, movies);
+         ItemClickListener onClickListener = new ItemClickListener(){
+
+             @Override
+             public void onItemClicked(int position) {
+                Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                Movie m = movies.get(position);
+                intent.putExtra("id", m.getStringId());
+                startActivity(intent);
+             }
+         };
+
+        MovieAdapter movieAdapter = new MovieAdapter(this, movies, onClickListener);
 
         rvMovies.setAdapter(movieAdapter);
 
@@ -70,4 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 }

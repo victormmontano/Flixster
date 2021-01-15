@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Flixster</string>
+    <string-array name="language_array">
+        <item>English</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>日本語</item>
+        <item>한국어/조선말</item>
+        <item>Pусский</item>
+        <item>Český</item>
+        <item>български език</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>ελληνικά</item>
+        <item>עִבְרִית</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>Lietuvių</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Slovenčina</item>
+        <item>Srpski</item>
+        <item>Türkçe</item>
+        <item>Український</item>
+        <item>普通话</item>
+    </string-array>
 </resources>
