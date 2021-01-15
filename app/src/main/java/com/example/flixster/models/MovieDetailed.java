@@ -98,16 +98,7 @@ public class MovieDetailed {
     public double getRating(){ return voteAverage/2; }
 
     public String getFormattedRuntime(){
-        String format = "%d hr %d min";
-        int s = runtime;
-      /*  int hours = 0;
-        while(s > 60){
-            s -= 60;
-            hours++;
-        }
-        int minutes = s;*/
-        return String.format("%02d:%02d", s / 60, (s % 60));
-        //return String.format(format, hours, minutes);
+        return String.format("%02d:%02d", runtime / 60, (runtime % 60));
     }
 
 }

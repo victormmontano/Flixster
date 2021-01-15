@@ -22,21 +22,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.Headers;
 
 public class MovieActivity extends AppCompatActivity {
     private static final String DETAILS_URL = "https://api.themoviedb.org/3/movie/%s?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&language=en-US";
     private static final String TRANSLATION_URL = "https://api.themoviedb.org/3/movie/%s/translations?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
-
+    private static final String RECOMMENDATIONS_URL = "https://api.themoviedb.org/3/movie/%s/recommendations?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&page=1";
     private ImageView ivPoster;
+    private ImageView ivPosterRec1;
+    private ImageView ivPosterRec2;
+    private ImageView ivPosterRec3;
     private TextView tvTitle;
     private TextView tvDescription;
     private Spinner spinnerLanguage;
     private RatingBar ratingBar;
     private TextView tvRuntime;
+    private TextView tvReleaseDate;
 
     private AsyncHttpClient client;
     MovieDetailed movie;
+    List<Movie> recommendations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,10 @@ public class MovieActivity extends AppCompatActivity {
         spinnerLanguage = findViewById(R.id.spinnerLanguage);
         ratingBar = findViewById(R.id.ratingBar);
         tvRuntime = findViewById(R.id.tvRuntime);
+        tvReleaseDate = findViewById(R.id.tvReleaseDate);
+        ivPosterRec1 = findViewById(R.id.ivRec1);
+        ivPosterRec2 = findViewById(R.id.ivRec2);
+        ivPosterRec3 = findViewById(R.id.ivRec3);
 
         client = new AsyncHttpClient();
 
@@ -57,7 +69,7 @@ public class MovieActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Intent passing data did not work", Toast.LENGTH_SHORT).show();
         }
         String url = String.format(DETAILS_URL, id);
-        Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
 
         client.get(url, new JsonHttpResponseHandler() {
             @Override
@@ -68,12 +80,14 @@ public class MovieActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Glide.with(getApplicationContext()).load(movie.getPosterPath()).into(ivPoster);
+                Glide.with(getApplicationContext()).load(movie.getBackdropPath()).into(ivPoster);
                 tvTitle.setText(movie.getTitle());
                 tvDescription.setText(movie.getOverview());
                 ratingBar.setRating((float) movie.getRating());
                 tvRuntime.setText(movie.getFormattedRuntime());
-
+                tvReleaseDate.setText(movie.getReleaseDate());
+                setRecommendations(movie.getStringId());
+                setSpinnerClicker();
             }
 
             @Override
@@ -82,15 +96,21 @@ public class MovieActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+
+    }
+
+    private void setSpinnerClicker() {
         spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(movie!= null) {
-                    String newLanguage = spinnerLanguage.getItemAtPosition(i).toString();
-                    if (!newLanguage.equals(movie.getLanguage())) {
-                        setLanguage(newLanguage);
-                    }
+                String newLanguage = spinnerLanguage.getItemAtPosition(i).toString();
+                if (!newLanguage.equals(movie.getLanguage())) {
+                    setLanguage(newLanguage);
                 }
+
             }
 
             @Override
@@ -98,8 +118,76 @@ public class MovieActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setRecommendations(String stringId) {
+        recommendations = new ArrayList<>();
+        //String url = "https://api.themoviedb.org/3/movie/%s/similar?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&page=1";
+        String url = String.format(RECOMMENDATIONS_URL, stringId);
+        client.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Headers headers, JSON json) {
+                JSONObject jsonObject = json.jsonObject;
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray("results");
+                    //System.out.println(jsonArray.toString());
+                    //Toast.makeText(getApplicationContext(), jsonArray.length(), Toast.LENGTH_SHORT).show();
+                    for(int j = 0 ;j < 3 && j < jsonArray.length(); j++){
+                        recommendations.add(new Movie(jsonArray.getJSONObject(j)));
+                    }
+                    Glide.with(getApplicationContext()).load(recommendations.get(0).getPosterPath()).into(ivPosterRec1);
+                    Glide.with(getApplicationContext()).load(recommendations.get(1).getPosterPath()).into(ivPosterRec2);
+                    Glide.with(getApplicationContext()).load(recommendations.get(2).getPosterPath()).into(ivPosterRec3);
+                    setPosterClickListeners();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int i, Headers headers, String s, Throwable throwable) {
+
+            }
+        });
 
 
+    }
+
+    private void setPosterClickListeners() {
+
+        ivPosterRec1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               /*Intent intent = new Intent();
+               intent.putExtra("id", recommendations.get(0).getStringId());
+               startActivity(intent);*/
+                /*getIntent().putExtra("id", recommendations.get(0).getStringId());
+                recreate();*/
+                finish();
+                startActivity(getIntent().putExtra("id", recommendations.get(0).getStringId()));
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        ivPosterRec2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(getIntent().putExtra("id", recommendations.get(1).getStringId()));
+                overridePendingTransition(0, 0);
+            }
+        });
+
+        ivPosterRec3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(getIntent().putExtra("id", recommendations.get(2).getStringId()));
+                overridePendingTransition(0, 0);
+            }
+        });
 
     }
 
