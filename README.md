@@ -29,7 +29,7 @@ I implemented a long click option on each movie to toggle the view of each movie
 <img src="https://github.com/victormmontano/Flixster/blob/main/FlixsterWalkthrough.gif" width=250><br>
 
 ### Notes
-It was a challenge to refactor my view holders into their own classes to implement homogenous recycler views because I instantiated the views in my holders with the wrong id's. I also had to figure out how to place my listeners in the appropriate places to avoid null pointer exceptions. because the api calls are asynchronous.
+It was a challenge to refactor my view holders into their own classes to implement homogenous recycler views because I instantiated the views in my holders with the wrong id's. I also had to figure out how to place my listeners in the appropriate places to avoid null pointer exceptions because the api calls are asynchronous.
 
 ### Open-source libraries used
 
