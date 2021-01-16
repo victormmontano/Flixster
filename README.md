@@ -25,7 +25,6 @@ Flixster is an app that allows users to browse movies from the [The Movie Databa
 I implemented a long click option on each movie to toggle the view of each movie between only the full backdrop and the poster with  information.  The user can differentiate between popular ( > 5 stars) and not  popular by the colors of the background (green for  popular and  blue for unpopular). 
 
 ### App Walkthough GIF
-`TODO://` Add the URL to your animated app walkthough `gif` in the image tag below, `YOUR_GIF_URL_HERE`. Make sure the gif actually renders and animates when viewing this README. (🚫 Remove this paragraph after after adding gif)
 
 <img src="https://s2.gifyu.com/images/FlixsterWalkthrough.gif" width=250><br>
 
