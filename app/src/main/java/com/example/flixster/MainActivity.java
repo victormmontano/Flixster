@@ -16,6 +16,7 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.adapters.MovieAdapter;
 import com.example.flixster.interfaces.ItemClickListener;
+import com.example.flixster.interfaces.ItemLongClickListener;
 import com.example.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -34,27 +35,37 @@ public class MainActivity extends AppCompatActivity {
     public static final String TRANSLATION_URL = "https://api.themoviedb.org/3/movie/";
 
     List<Movie> movies;
+    MovieAdapter movieAdapter;
+    RecyclerView rvMovies;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        RecyclerView rvMovies = findViewById(R.id.rvMovies);
+        rvMovies = findViewById(R.id.rvMovies);
         movies = new ArrayList<>();
 
-         ItemClickListener onClickListener = new ItemClickListener(){
+        ItemLongClickListener onLongClickListener = new ItemLongClickListener() {
+            @Override
+            public void onItemLongClicked(int position) {
+                movies.get(position).togglePopular();
+                movieAdapter.notifyItemChanged(position);
+            }
+        };
 
-             @Override
-             public void onItemClicked(int position) {
+        ItemClickListener onClickListener = new ItemClickListener(){
+
+            @Override
+            public void onItemClicked(int position) {
                 Intent intent = new Intent(MainActivity.this, MovieActivity.class);
                 Movie m = movies.get(position);
                 intent.putExtra("id", m.getStringId());
                 startActivity(intent);
-             }
-         };
+            }
+        };
 
-        MovieAdapter movieAdapter = new MovieAdapter(this, movies, onClickListener);
+        movieAdapter = new MovieAdapter(this, movies, onClickListener, onLongClickListener);
 
         rvMovies.setAdapter(movieAdapter);
 

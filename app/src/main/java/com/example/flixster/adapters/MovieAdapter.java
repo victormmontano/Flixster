@@ -19,9 +19,12 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import com.example.flixster.R;
 import com.example.flixster.interfaces.ItemClickListener;
+import com.example.flixster.interfaces.ItemLongClickListener;
 import com.example.flixster.models.Movie;
 
 import java.util.List;
@@ -31,13 +34,15 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     Context context;
     List<Movie> movies;
     ItemClickListener itemClickListener;
+    ItemLongClickListener itemLongClickListener;
     public final int POPULAR = 1;
     public final int REGULAR = 0;
 
-    public MovieAdapter(Context context, List<Movie> movies, ItemClickListener itemClickListener) {
+    public MovieAdapter(Context context, List<Movie> movies, ItemClickListener itemClickListener, ItemLongClickListener itemLongClickListener) {
         this.movies = movies;
         this.context = context;
         this.itemClickListener = itemClickListener;
+        this.itemLongClickListener = itemLongClickListener;
     }
 
     @NonNull
@@ -49,11 +54,11 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (viewType) {
             case POPULAR:
                 View vp = inflater.inflate(R.layout.item_movie_popular, parent, false);
-                viewHolder = new MoviePopularViewHolder(vp, itemClickListener);
+                viewHolder = new MoviePopularViewHolder(vp, itemClickListener, itemLongClickListener);
                 break;
             default:
                 View v = inflater.inflate(R.layout.item_movie, parent, false);
-                viewHolder = new MovieViewHolder(v, itemClickListener);
+                viewHolder = new MovieViewHolder(v, itemClickListener, itemLongClickListener);
                 break;
         }
         return viewHolder;
@@ -107,13 +112,20 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             imageUrl = movie.getBackdropPath();
         else
             imageUrl = movie.getPosterPath();
-
-        Glide.with(context).load(imageUrl).into(vh.getIvPoster());
+        if(movie.getVoteAverage() <= 5.0)
+            vh.getLayout().setBackgroundColor(Color.parseColor("#6B818C"));
+        else
+            vh.getLayout().setBackgroundColor(Color.parseColor("#35605A"));
+        Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(30, 10)).into(vh.getIvPoster());
     }
 
     private void configurePopularViewHolder(MoviePopularViewHolder vh, int position) {
         Movie movie = movies.get(position);
-        Glide.with(context).load(movie.getBackdropPath()).into(vh.getIvPoster());
+        if(movie.getVoteAverage() <= 5.0)
+            vh.getLayout().setBackgroundColor(Color.parseColor("#6B818C"));
+        else
+            vh.getLayout().setBackgroundColor(Color.parseColor("#35605A"));
+        Glide.with(context).load(movie.getBackdropPath()).transform(new RoundedCornersTransformation(30, 10)).into(vh.getIvPoster());
     }
 
 
@@ -131,65 +143,5 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 }
 
-   /* public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle;
-        TextView tvOverview;
-        ImageView ivPoster;
-
-        public ViewHolder(@NonNull View itemView, ItemClickListener clickListener) {
-            super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOverview = itemView.findViewById(R.id.tvOverview);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListener.onItemClicked(getAdapterPosition());
-                }
-            });
-
-
-         }
-
-        public void bind(Movie movie) {
-            if(movie.isAdult())
-                tvTitle.setTextColor(Color.RED);
-            tvTitle.setText(movie.getTitle());
-            tvOverview.setText(movie.getOverview());
-            String imageUrl;
-            if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                imageUrl = movie.getBackdropPath();
-            else
-                imageUrl = movie.getPosterPath();
-
-            Glide.with(context).load(imageUrl).into(ivPoster);
-
-        }
-    }*/
-/*
-    public class ViewHolderPopular extends RecyclerView.ViewHolder {
-        ImageView ivPoster;
-
-        public ViewHolderPopular(@NonNull View itemView, ItemClickListener clickListener) {
-            super(itemView);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListener.onItemClicked(getAdapterPosition());
-                }
-            });
-
-
-        }
-
-        public void bind(Movie movie) {
-
-            Glide.with(context).load(movie.getBackdropPath()).into(ivPoster);
-
-        }
-    }*/
 
 

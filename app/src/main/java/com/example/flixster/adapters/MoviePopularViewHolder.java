@@ -2,19 +2,23 @@ package com.example.flixster.adapters;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.flixster.R;
 import com.example.flixster.interfaces.ItemClickListener;
+import com.example.flixster.interfaces.ItemLongClickListener;
 
 public class MoviePopularViewHolder extends RecyclerView.ViewHolder {
     ImageView ivPoster;
+    RelativeLayout layout;
 
-    public MoviePopularViewHolder(@NonNull View itemView, ItemClickListener itemClickListener) {
+    public MoviePopularViewHolder(@NonNull View itemView, ItemClickListener itemClickListener, ItemLongClickListener itemLongClickListener) {
         super(itemView);
         ivPoster  = itemView.findViewById(R.id.ivMoviePoster);
+        layout = itemView.findViewById(R.id.layout);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -23,37 +27,22 @@ public class MoviePopularViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-    }
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                itemLongClickListener.onItemLongClicked(getAdapterPosition());
+                return true;
+            }
+        });
 
+    }
 
     public ImageView getIvPoster() {
         return ivPoster;
     }
 
-
-    /*
-    public class ViewHolderPopular extends RecyclerView.ViewHolder {
-        ImageView ivPoster;
-
-        public ViewHolderPopular(@NonNull View itemView, ItemClickListener clickListener) {
-            super(itemView);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListener.onItemClicked(getAdapterPosition());
-                }
-            });
-
-
-        }
-
-        public void bind(Movie movie) {
-
-            Glide.with(context).load(movie.getBackdropPath()).into(ivPoster);
-
-        }
+    public RelativeLayout getLayout() {
+        return layout;
     }
-     */
+
 }
