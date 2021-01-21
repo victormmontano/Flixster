@@ -17,7 +17,6 @@ public class MovieDetailed {
     String defaultTitle;
     String defaultOverview;
     String releaseDate;
-    int revenue;
     int runtime;
     boolean adult;
     double voteAverage;
@@ -32,7 +31,6 @@ public class MovieDetailed {
         defaultTitle = title;
         defaultOverview = overview;
         releaseDate = jsonObject.getString("release_date");
-        revenue = jsonObject.getInt("revenue");
         runtime = jsonObject.getInt("runtime");
         adult = jsonObject.getBoolean("adult");
         voteAverage = jsonObject.getDouble("vote_average");
@@ -89,8 +87,8 @@ public class MovieDetailed {
     public String getDefaultTitle(){ return defaultTitle;}
     public String getDefaultOverview(){ return defaultOverview;}
 
-    public int getRevenue() { return revenue; }
     public int getRuntime() { return runtime; }
+
     public String getReleaseDate(){ return releaseDate; }
 
     public double getVoteAverage(){ return voteAverage; }

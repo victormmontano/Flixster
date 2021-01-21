@@ -2,20 +2,36 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".MovieActivity">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <Spinner
+            android:id="@+id/spinnerLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:entries="@array/language_array" />
+
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:id="@+id/ivPoster"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:transitionName="movie" />
+
 
         <ImageView
             android:id="@+id/ivMoviePoster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spinnerLanguage"
-            android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
@@ -23,71 +39,46 @@
             android:id="@+id/tvMovieTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivMoviePoster"
             android:layout_marginStart="5dp"
             android:textSize="24sp"
             android:textStyle="bold"
-            tools:text="Title" />
-
-        <Spinner
-            android:id="@+id/spinnerLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:entries="@array/language_array" />
+            tools:text="Movie" />
 
         <RatingBar
             android:id="@+id/ratingBar"
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvMovieTitle"
             android:numStars="10"
             android:stepSize=".1" />
-
-        <TextView
-            android:id="@+id/tvRuntime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ratingBar"
-            android:layout_marginStart="5dp"
-            android:layout_toEndOf="@id/tvReleaseDate"
-            tools:text="HH:MM" />
 
         <TextView
             android:id="@+id/tvReleaseDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ratingBar"
+            android:layout_marginStart="5dp" />
+
+        <TextView
+            android:id="@+id/tvMovieDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            tools:text="YYYY-MM-DD" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvSimilar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvMovieDescription"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:text="Recommended"
             android:textSize="18sp"
             android:textStyle="italic" />
 
-        <TextView
-            android:id="@+id/tvMovieDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvReleaseDate"
-            android:layout_marginStart="5dp"
-            android:textSize="16sp"
-            tools:text="Description of the movie" />
-
         <LinearLayout
             android:id="@+id/layoutRecs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvSimilar"
-            android:layout_alignParentBottom="false"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
@@ -122,7 +113,7 @@
         </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </ScrollView>

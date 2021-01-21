@@ -17,7 +17,7 @@ public class MoviePopularViewHolder extends RecyclerView.ViewHolder {
 
     public MoviePopularViewHolder(@NonNull View itemView, ItemClickListener itemClickListener, ItemLongClickListener itemLongClickListener) {
         super(itemView);
-        ivPoster  = itemView.findViewById(R.id.ivMoviePoster);
+        ivPoster  = itemView.findViewById(R.id.ivPoster);
         layout = itemView.findViewById(R.id.layout);
 
         itemView.setOnClickListener(new View.OnClickListener() {

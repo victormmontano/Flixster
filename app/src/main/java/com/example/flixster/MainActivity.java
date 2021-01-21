@@ -1,6 +1,7 @@
 package com.example.flixster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -18,10 +21,12 @@ import com.example.flixster.adapters.MovieAdapter;
 import com.example.flixster.interfaces.ItemClickListener;
 import com.example.flixster.interfaces.ItemLongClickListener;
 import com.example.flixster.models.Movie;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClicked(int position) {
                 Intent intent = new Intent(MainActivity.this, MovieActivity.class);
                 Movie m = movies.get(position);
-                intent.putExtra("id", m.getStringId());
+                intent.putExtra("movie", Parcels.wrap(m));
+             //   ActivityOptionsCompat options = ActivityOptionsCompat.
+              //          makeSceneTransitionAnimation(MainActivity.this, (View)ivPoster , "movie");
                 startActivity(intent);
             }
         };

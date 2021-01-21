@@ -9,11 +9,12 @@
     android:layout_marginBottom="5dp">
 
     <ImageView
-        android:id="@+id/ivMoviePoster"
+        android:id="@+id/ivPoster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
+        android:transitionName="movie"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 </RelativeLayout>
