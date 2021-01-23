@@ -35,7 +35,7 @@ public class MovieActivity extends YouTubeBaseActivity {
     private static final String RECOMMENDATIONS_URL = "https://api.themoviedb.org/3/movie/%s/recommendations?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&page=1";
     private  static final String VIDEOS_URL = "https://api.themoviedb.org/3/movie/%d/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
-    private static final String YOUTUBE_API_KEY = "AIzaSyAXy5Ds1KgNNeWTXJpPQPjOlHgjCM_kS5E";
+    private String YOUTUBE_API_KEY;
 
 
     private ImageView ivPoster;
@@ -57,8 +57,6 @@ public class MovieActivity extends YouTubeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-
-
         ivPoster = findViewById(R.id.ivMoviePoster);
         tvTitle = findViewById(R.id.tvMovieTitle);
         tvDescription = findViewById(R.id.tvMovieDescription);
@@ -69,6 +67,8 @@ public class MovieActivity extends YouTubeBaseActivity {
         ivPosterRec2 = findViewById(R.id.ivRec2);
         ivPosterRec3 = findViewById(R.id.ivRec3);
         playerView = (YouTubePlayerView) findViewById(R.id.player);
+
+        YOUTUBE_API_KEY = getString(R.string.youtube_api_key);
 
 
         client = new AsyncHttpClient();
