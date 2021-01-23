@@ -18,19 +18,13 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     ImageView ivPoster;
     RelativeLayout layout;
 
-    public MovieViewHolder(@NonNull View itemView, ItemClickListener itemClickListener, ItemLongClickListener itemLongClickListener) {
+    public MovieViewHolder(@NonNull View itemView, ItemLongClickListener itemLongClickListener) {
         super(itemView);
         tvTitle = itemView.findViewById(R.id.tvTitle);
         tvOverview = itemView.findViewById(R.id.tvOverview);
         ivPoster  = itemView.findViewById(R.id.ivPoster);
         layout = itemView.findViewById(R.id.layout);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                itemClickListener.onItemClicked(getAdapterPosition());
-            }
-        });
 
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

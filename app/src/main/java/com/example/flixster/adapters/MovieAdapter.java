@@ -1,6 +1,8 @@
 package com.example.flixster.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,10 +25,15 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
+import com.example.flixster.MainActivity;
+import com.example.flixster.MovieActivity;
 import com.example.flixster.R;
 import com.example.flixster.interfaces.ItemClickListener;
 import com.example.flixster.interfaces.ItemLongClickListener;
 import com.example.flixster.models.Movie;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -33,15 +41,13 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     Context context;
     List<Movie> movies;
-    ItemClickListener itemClickListener;
     ItemLongClickListener itemLongClickListener;
     public final int POPULAR = 1;
     public final int REGULAR = 0;
 
-    public MovieAdapter(Context context, List<Movie> movies, ItemClickListener itemClickListener, ItemLongClickListener itemLongClickListener) {
+    public MovieAdapter(Context context, List<Movie> movies, ItemLongClickListener itemLongClickListener) {
         this.movies = movies;
         this.context = context;
-        this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
     }
 
@@ -54,41 +60,19 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (viewType) {
             case POPULAR:
                 View vp = inflater.inflate(R.layout.item_movie_popular, parent, false);
-                viewHolder = new MoviePopularViewHolder(vp, itemClickListener, itemLongClickListener);
+                viewHolder = new MoviePopularViewHolder(vp, itemLongClickListener);
                 break;
             default:
                 View v = inflater.inflate(R.layout.item_movie, parent, false);
-                viewHolder = new MovieViewHolder(v, itemClickListener, itemLongClickListener);
+                viewHolder = new MovieViewHolder(v, itemLongClickListener);
                 break;
         }
         return viewHolder;
-
-
-
-    /*    Log.d("MovieAdapter", "onCreateViewHolder");
-       /* View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-        return new ViewHolder(movieView, itemClickListener);
-        RecyclerView.ViewHolder viewHolder;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
-        switch (viewType) {
-            case POPULAR:
-                View vPopular = inflater.inflate(R.layout.item_movie_popular, parent, false);
-                viewHolder = new ViewHolderPopular(vPopular, itemClickListener);
-                break;
-            default:
-                View v = inflater.inflate(R.layout.item_movie, parent, false);
-                viewHolder = new ViewHolderPopular(v, itemClickListener);
-                break;
-        }
-        return viewHolder;*/
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        /*Log.d("MovieAdapter", "onBindViewHolder " + position);
-        Movie movie = movies.get(position);
-        holder.bind(movie);*/
+        Log.d("MovieAdapter", "onBindViewHolder " + position);
         switch (holder.getItemViewType()) {
             case POPULAR:
                 MoviePopularViewHolder vhp = (MoviePopularViewHolder) holder;
@@ -99,6 +83,9 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 configureDefaultViewHolder(vh, position);
                 break;
         }
+
+
+
     }
 
     private void configureDefaultViewHolder(MovieViewHolder vh, int position) {
@@ -116,7 +103,20 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             vh.getLayout().setBackgroundColor(Color.parseColor("#6B818C"));
         else
             vh.getLayout().setBackgroundColor(Color.parseColor("#35605A"));
-        Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(30, 10)).into(vh.getIvPoster());
+        Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(50, 10)).into(vh.getIvPoster());
+        vh.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MovieActivity.class);
+                Movie m = movies.get(position);
+                intent.putExtra("movie", Parcels.wrap(m));
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((Activity) context, vh.getIvPoster(), "movie");
+                context.startActivity(intent, options.toBundle());
+            }
+        });
+
+
     }
 
     private void configurePopularViewHolder(MoviePopularViewHolder vh, int position) {
@@ -125,7 +125,18 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             vh.getLayout().setBackgroundColor(Color.parseColor("#6B818C"));
         else
             vh.getLayout().setBackgroundColor(Color.parseColor("#35605A"));
-        Glide.with(context).load(movie.getBackdropPath()).transform(new RoundedCornersTransformation(30, 10)).into(vh.getIvPoster());
+        Glide.with(context).load(movie.getBackdropPath()).transform(new RoundedCornersTransformation(100, 10)).into(vh.getIvPoster());
+        vh.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MovieActivity.class);
+                Movie m = movies.get(position);
+                intent.putExtra("movie", Parcels.wrap(m));
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((Activity) context, vh.getIvPoster(), "movie");
+                context.startActivity(intent, options.toBundle());
+            }
+        });
     }
 
 

@@ -3,6 +3,7 @@ package com.example.flixster;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -56,6 +57,8 @@ public class MovieActivity extends YouTubeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
+
+
         ivPoster = findViewById(R.id.ivMoviePoster);
         tvTitle = findViewById(R.id.tvMovieTitle);
         tvDescription = findViewById(R.id.tvMovieDescription);
@@ -65,7 +68,7 @@ public class MovieActivity extends YouTubeBaseActivity {
         ivPosterRec1 = findViewById(R.id.ivRec1);
         ivPosterRec2 = findViewById(R.id.ivRec2);
         ivPosterRec3 = findViewById(R.id.ivRec3);
-        playerView = (YouTubePlayerView) findViewById(R.id.ivPoster);
+        playerView = (YouTubePlayerView) findViewById(R.id.player);
 
 
         client = new AsyncHttpClient();
@@ -76,15 +79,20 @@ public class MovieActivity extends YouTubeBaseActivity {
             Toast.makeText(getApplicationContext(), "Id not passed", Toast.LENGTH_SHORT).show();
         }
         else{
-            //Glide.with(getApplicationContext()).load(movie.getBackdropPath()).into(ivPoster);
             tvTitle.setText(movie.getTitle());
             tvDescription.setText(movie.getOverview());
             ratingBar.setRating((float) movie.getRating());
             tvReleaseDate.setText(movie.getReleaseDate());
             setRecommendations(movie.getStringId());
             setSpinnerClicker();
+            callYoutubeApi();
         }
 
+
+
+    }
+
+    private void callYoutubeApi(){
         client.get(String.format(VIDEOS_URL, movie.getId()), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
@@ -102,14 +110,14 @@ public class MovieActivity extends YouTubeBaseActivity {
                             found = true;
                         j++;
                     }
-
                     if(found){
+                        playerView.setVisibility(View.VISIBLE);
                         String youtubeKey = results.getJSONObject(j-1).getString("key");
                         initializeYoutube(youtubeKey);
                         Log.d("MovieActivity", youtubeKey);
                     }
                     else {
-                        //TODO: https://pierfrancesco-soffritti.medium.com/customize-android-youtube-players-ui-9f32da9e8505
+                        playerView.setVisibility(View.GONE);
                         Glide.with(getApplicationContext()).load(movie.getBackdropPath()).into(ivPoster);
                     }
 
@@ -123,7 +131,6 @@ public class MovieActivity extends YouTubeBaseActivity {
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
             }
         });
-
     }
 
     private void initializeYoutube(String youtubeKey) {
@@ -132,6 +139,8 @@ public class MovieActivity extends YouTubeBaseActivity {
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d("MovieActivity", "onSuccess");
                 youTubePlayer.cueVideo(youtubeKey);
+                if(movie.getVoteAverage() > 5.0)
+                    youTubePlayer.loadVideo(youtubeKey);
             }
 
             @Override
@@ -161,7 +170,6 @@ public class MovieActivity extends YouTubeBaseActivity {
 
     private void setRecommendations(String stringId) {
         recommendations = new ArrayList<>();
-        //String url = "https://api.themoviedb.org/3/movie/%s/similar?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&page=1";
         String url = String.format(RECOMMENDATIONS_URL, stringId);
         client.get(url, new JsonHttpResponseHandler() {
             @Override
@@ -169,8 +177,7 @@ public class MovieActivity extends YouTubeBaseActivity {
                 JSONObject jsonObject = json.jsonObject;
                 try {
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
-                    //System.out.println(jsonArray.toString());
-                    //Toast.makeText(getApplicationContext(), jsonArray.length(), Toast.LENGTH_SHORT).show();
+
                     for(int j = 0 ;j < 3 && j < jsonArray.length(); j++){
                         recommendations.add(new Movie(jsonArray.getJSONObject(j)));
                     }
@@ -199,11 +206,6 @@ public class MovieActivity extends YouTubeBaseActivity {
         ivPosterRec1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /*Intent intent = new Intent();
-               intent.putExtra("id", recommendations.get(0).getStringId());
-               startActivity(intent);*/
-                /*getIntent().putExtra("id", recommendations.get(0).getStringId());
-                recreate();*/
                 finish();
                 startActivity(getIntent().putExtra("movie", Parcels.wrap(recommendations.get(0))));
                 overridePendingTransition(0, 0);

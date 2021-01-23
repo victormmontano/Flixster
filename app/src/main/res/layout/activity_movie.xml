@@ -22,7 +22,7 @@
             android:entries="@array/language_array" />
 
         <com.google.android.youtube.player.YouTubePlayerView
-            android:id="@+id/ivPoster"
+            android:id="@+id/player"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:transitionName="movie" />
@@ -42,6 +42,7 @@
             android:layout_marginStart="5dp"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:transitionName="movie"
             tools:text="Movie" />
 
         <RatingBar

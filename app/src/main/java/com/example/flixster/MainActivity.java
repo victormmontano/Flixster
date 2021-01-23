@@ -2,6 +2,7 @@ package com.example.flixster;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -59,20 +61,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        ItemClickListener onClickListener = new ItemClickListener(){
 
-            @Override
-            public void onItemClicked(int position) {
-                Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-                Movie m = movies.get(position);
-                intent.putExtra("movie", Parcels.wrap(m));
-             //   ActivityOptionsCompat options = ActivityOptionsCompat.
-              //          makeSceneTransitionAnimation(MainActivity.this, (View)ivPoster , "movie");
-                startActivity(intent);
-            }
-        };
-
-        movieAdapter = new MovieAdapter(this, movies, onClickListener, onLongClickListener);
+        movieAdapter = new MovieAdapter(this, movies, onLongClickListener);
 
         rvMovies.setAdapter(movieAdapter);
 
